@@ -51,8 +51,7 @@ jobs:
       - name: Setup Horizon Packaging Tools
         run: |
           git clone --depth 1 https://github.com/horizon-rust/horizon-mods.git /tmp/horizon-mods
-          cd /tmp/horizon-mods
-          cargo install --path crates/cargo-horizon-mod
+          bash /tmp/horizon-mods/scripts/install-tool.sh
 
       - name: Package Native Mod (.hnmod)
         run: |
