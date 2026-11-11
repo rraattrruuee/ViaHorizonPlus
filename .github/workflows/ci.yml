@@ -1,0 +1,83 @@
+name: CI & Build
+
+on:
+  push:
+    branches: [ "main" ]
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Rust Check & Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+        continue-on-error: true
+
+      - name: Cargo Check
+        run: cargo check --verbose
+
+      - name: Cargo Test
+        run: cargo test --verbose
+
+  package:
+    name: Package & Verify Horizon Native Mod
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Setup Horizon Packaging Tools
+        run: |
+          git clone --depth 1 https://github.com/horizon-rust/horizon-mods.git /tmp/horizon-mods
+          cd /tmp/horizon-mods
+          cargo install --path crates/cargo-horizon-mod
+
+      - name: Package Native Mod (.hnmod)
+        run: |
+          mkdir -p /tmp/horizon-mods/native/viahorizonplus/mixins/viahorizonplus
+          cp compatibility.json /tmp/horizon-mods/native/viahorizonplus/
+          cp -r bundle/mixins/viahorizonplus/* /tmp/horizon-mods/native/viahorizonplus/mixins/viahorizonplus/
+          cd /tmp/horizon-mods
+          python3 native/tools/native.py package viahorizonplus
+          cp native/target/viahorizonplus-*.hnmod $GITHUB_WORKSPACE/
+
+      - name: Verify with cargo-horizon-mod check
+        run: |
+          cargo horizon-mod check $GITHUB_WORKSPACE/viahorizonplus-*.hnmod
+
+      - name: Upload .hnmod Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: viahorizonplus-hnmod
+          path: viahorizonplus-*.hnmod
+          if-no-files-found: error
+
+      - name: Release on GitHub (Tags only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: viahorizonplus-*.hnmod
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
