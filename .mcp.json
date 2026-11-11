@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "horizon": {
+      "command": "horizon-launcher",
+      "args": [
+        "mcp"
+      ],
+      "env": {
+        "HORIZON_OLDER_SERVERS": "1"
+      }
+    }
+  }
+}

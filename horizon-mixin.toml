@@ -1,0 +1,33 @@
+[mod]
+id = "viahorizonplus"
+name = "ViaHorizonPlus"
+version = "0.1.0"
+priority = 500
+description = "Multi-version client compatibility and legacy protocol emulation for Horizon"
+
+[compatibility]
+horizon_revision = "main"
+
+[[module]]
+id = "runtime"
+file = "crates/horizon-client/src/game.rs"
+name = "viahorizonplus"
+source = "src/lib.rs"
+
+[[injection]]
+id = "tick"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_tick"
+helper = "src/hooks/tick.rs"
+bindings = [
+    { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+]
+
+[[injection]]
+id = "render_hud"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_render_hud"
+helper = "src/hooks/hud.rs"
+bindings = [
+    { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+]
