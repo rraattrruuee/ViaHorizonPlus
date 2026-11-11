@@ -54,17 +54,12 @@ horizon-launcher --dev-mod "/chemin/vers/viahorizonplus"
 
 ---
 
-## 📜 Licence & Attribution Amont (GNU GPLv3)
+## 📜 Licence & Crédits
 
-Ce projet est distribué sous les termes de la licence **GNU General Public License v3.0 (GPL-3.0-or-later)** conformément aux exigences de la Free Software Foundation.
+Ce projet est distribué sous la licence libre et permissive **[MIT](LICENSE)**.
 
-### Citation du projet amont :
-- **Projet d'origine** : [ViaFabricPlus](https://github.com/ViaVersion/ViaFabricPlus)
-- **Auteur principal & mainteneur original** : [FlorianMichael](https://github.com/FlorianMichael)
-- **Organisation** : [ViaVersion](https://github.com/ViaVersion)
-- **Licence originale** : GNU General Public License v3.0
+### Crédits & Inspiration
+- Inspiré par le concept de [ViaFabricPlus](https://github.com/ViaVersion/ViaFabricPlus) développé par FlorianMichael et l'équipe ViaVersion.
+- Implémentation 100% native en Rust pour Horizon par rraattrruuee et les contributeurs.
 
-ViaHorizonPlus est une adaptation indépendante et un portage natif en langage Rust conçu pour s'intégrer à l'architecture modulaire d'Horizon sans dépendre de la machine virtuelle Java. Tous les droits d'auteur relatifs aux concepts, protocoles et logiques de rétro-compatibilité issus de ViaFabricPlus restent la propriété intellectuelle de leurs auteurs respectifs.
-
-Consultez le fichier [`LICENSE`](file:///home/rraattrruuee/Documents/Github/viahorizonplus/LICENSE) et le fichier [`NOTICE`](file:///home/rraattrruuee/Documents/Github/viahorizonplus/NOTICE) pour le texte intégral de la licence.
 
