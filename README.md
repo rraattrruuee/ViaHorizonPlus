@@ -1,65 +1,95 @@
 # ViaHorizonPlus
 
-**ViaHorizonPlus** est le portage et l'adaptation native en **Rust** de [ViaFabricPlus](https://github.com/ViaVersion/ViaFabricPlus) conçu spécifiquement pour le moteur [Horizon](https://playhorizon.dev/) (réécriture complète de Minecraft en Rust).
+**English** | [Français](README-fr.md)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Minecraft: 26.3](https://img.shields.io/badge/Minecraft-26.3-brightgreen.svg)](https://playhorizon.dev/)
+[![Horizon Native Mod](https://img.shields.io/badge/Horizon-Native%20Mod-blueviolet.svg)](https://playhorizon.dev/mods)
+[![CI & Build](https://github.com/rraattrruuee/ViaHorizonPlus/actions/workflows/ci.yml/badge.svg)](https://github.com/rraattrruuee/ViaHorizonPlus/actions)
+
+**ViaHorizonPlus** is a native **Rust** port and adaptation inspired by [ViaFabricPlus](https://github.com/ViaVersion/ViaFabricPlus), built specifically for the [Horizon](https://playhorizon.dev/) client engine (a complete Minecraft rewrite in Rust with WGPU and Tokio).
+
+It enables players on Horizon to connect to older Minecraft servers (from legacy 1.8.x up to modern 26.3) with an in-game protocol selector directly on the Multiplayer screen, along with legacy 1.8 combat and movement emulation.
 
 ---
 
-## 🔍 Pourquoi un portage dédié pour Horizon ?
+## 🌟 Features
 
-1. **Pas de machine virtuelle Java (JVM) ni de Fabric :**  
-   Horizon est écrit à 100% en Rust (avec WGPU, Tokio, Rayon). Les mods Java classiques (`.jar`), les chargeurs comme Fabric/NeoForge, ainsi que les bytecode mixins (SpongePowered Mixins / ASM) ne peuvent pas s'exécuter dans Horizon.
-2. **Le système de modding natif d'Horizon (`horizon-mixins`) :**  
-   Horizon propose deux types de mods :
-   - **Content Mods (`.hmod`)** : Uniquement déclaratifs (JSON pour blocs, items, recettes - aucun code exécutable).
-   - **Native Mods (`.hnmod`)** : Du code Rust natif injecté à la compilation dans l'AST (arbre syntaxique abstrait) du jeu via `horizon-mixins` et configuré via `horizon-mixin.toml`.
-3. **Le défi de ViaVersion en Rust :**  
-   ViaFabricPlus en Java dépend d'une chaîne gigantesque de projets (> 500 000 lignes de code Java) : `ViaVersion`, `ViaBackwards`, `ViaLegacy` et `classic4j`.  
-   Dans Horizon, la couche protocole (`crates/horizon-protocol`) et le client (`crates/horizon-client`) nécessitent des hooks d'interception réseau et de gameplay natifs en Rust.
-
----
-
-## 🏗 Architecture de ViaHorizonPlus
-
-Le projet est structuré comme suit :
-
-* `horizon-mixin.toml` : Manifeste officiel de mod natif Horizon décrivant les modules et points d'injection (hooks dans `Game::native_tick`, `Game::native_render_hud`, etc.).
-* `src/protocol/` :
-  - `version.rs` : Registre exhaustif des versions de protocole (de Classic 0.30, Alpha, Beta 1.7.3, 1.8.x jusqu'à Horizon Native 26.3).
-  - `handshake.rs` : Encodage, décodage et réécriture du paquet Handshake (modification du `protocol_version` envoyé au serveur).
-  - `translator.rs` : Trait d'interception et de translation bidirectionnelle des paquets (serveur <-> client).
-* `src/emulation/` :
-  - `combat.rs` : Émulation des mécaniques de combat 1.8 (blocage à l'épée, suppression du cooldown d'attaque 1.9+, sons d'impact legacy).
-  - `movement.rs` : Émulation de la physique ancienne (hauteur des yeux en sneak à 1.54m au lieu de 1.27m, échelles 1.8, etc.).
-  - `visuals.rs` : Rendu et animations classiques (block-hitting 1.7/1.8, teinte de dégâts rouge classique).
-* `src/state.rs` : Gestion de l'état global (`ViaHorizonState`) thread-safe avec sélection de version dynamique.
-* `src/gui/` : Menu et sélecteur de version pour l'écran multijoueur d'Horizon.
-* `src/hooks/` : Implémentation des fonctions helpers injectées par `horizon-mixins`.
+- **In-Game Protocol Selector**: Dropdown menu directly on the top-right of the Multiplayer screen.
+- **Auto-Detection (Ping)**: Automatically negotiates the target server version or allows forcing a specific Minecraft version.
+- **Protocol Support**: Connect to servers running Minecraft 1.8.x through 26.3.
+- **Legacy 1.8 Gameplay Emulation**:
+  - Right-click sword blocking
+  - Removal of the 1.9+ attack delay / cooldown
+  - Classic 1.7 / 1.8 block-hitting animation
+  - Classic 1.8 sneaking eye height (1.54m instead of modern 1.27m)
+- **100% Native Rust**: Zero Java JVM, Fabric, or bytecode manipulation needed. Injected at compile-time into the Horizon client AST.
 
 ---
 
-## 🚀 Utilisation & Compilation
+## 🔍 Why a Dedicated Port for Horizon?
 
-### Vérification du code Rust :
+1. **No Java Virtual Machine (JVM) or Fabric**:  
+   Horizon is written entirely in Rust. Traditional Java mods (`.jar`), mod loaders (Fabric, NeoForge), and bytecode mixin libraries cannot run inside Horizon.
+2. **Native AST Injection (`horizon-mixins`)**:  
+   Horizon uses native mods (`.hnmod`) compiled directly into the client binary through AST transformations defined in `horizon-mixin.toml`.
+3. **Rust Protocol Translation**:  
+   Packet encoding, decoding, handshake interception, and version adaptation are handled directly inside Horizon's network layer.
+
+---
+
+## 📁 Repository Structure
+
+```
+viahorizonplus/
+├── bundle/mixins/viahorizonplus/    # Native mixin sources for Horizon
+│   ├── horizon-mixin.toml          # Mixin manifest (hooks, modules, injections)
+│   ├── runtime.rs                  # Version selector UI & runtime state
+│   ├── older_server.rs             # Server version detection hook
+│   ├── legacy_run.rs               # Network packet loop & adaptation
+│   ├── screen.rs / click.rs        # UI rendering and input hooks
+│   └── settings.rs                 # Mod settings integration
+├── src/                            # Core Rust crate library
+│   ├── protocol/                   # Protocol versions, Handshake, Translator traits
+│   ├── emulation/                  # 1.8 combat, movement, and visuals emulation
+│   └── gui/                        # In-game GUI components
+├── .github/workflows/ci.yml        # Automated CI, testing & packaging workflow
+├── compatibility.json              # Pinned Horizon engine & mixins revisions
+├── icon.png                        # Official 256x256 mod icon
+├── LICENSE                         # MIT License
+└── NOTICE                          # Attribution notices
+```
+
+---
+
+## 🚀 Building & Testing
+
+### Running Rust Unit Tests:
 ```bash
-cargo test
 cargo check
+cargo test
 ```
 
-### Intégration dans Horizon :
-Dans le dossier du mod natif, compilez le paquet Horizon ou lancez le jeu en mode développement avec le lanceur Horizon :
+### Testing with Horizon Launcher:
+Launch Horizon in development mode with the mod:
 ```bash
-# Lancement en mode dev mod avec Horizon Launcher
-horizon-launcher --dev-mod "/chemin/vers/viahorizonplus"
+horizon-launcher --dev-mod "/path/to/viahorizonplus"
+```
+
+### Packaging for the Horizon Registry:
+Clone the official `horizon-mods` repository to package into a `.hnmod` bundle:
+```bash
+python3 native/tools/native.py package /path/to/viahorizonplus
+cargo horizon-mod check target/viahorizonplus-0.1.5.hnmod
 ```
 
 ---
 
-## 📜 Licence & Crédits
+## 📜 License & Credits
 
-Ce projet est distribué sous la licence libre et permissive **[MIT](LICENSE)**.
+Distributed under the **[MIT License](LICENSE)**.
 
-### Crédits & Inspiration
-- Inspiré par le concept de [ViaFabricPlus](https://github.com/ViaVersion/ViaFabricPlus) développé par FlorianMichael et l'équipe ViaVersion.
-- Implémentation 100% native en Rust pour Horizon par rraattrruuee et les contributeurs.
-
-
+### Credits & Attribution:
+- Inspired by the concept of **[ViaFabricPlus](https://github.com/ViaVersion/ViaFabricPlus)** by **FlorianMichael** and the **ViaVersion** team.
+- 100% native Rust implementation for Horizon created by **rraattrruuee** and contributors.
+- Minecraft and related assets are trademarks of Mojang Synergies AB.
