@@ -1,6 +1,6 @@
 // Injected into horizon_client::net::older_server
 fn viahorizonplus_older_server(
-    address: &str,
+    _address: &str,
 ) -> core::ops::ControlFlow<Option<horizon_protocol::adapter::ServerVersion>> {
     use horizon_protocol::adapter::ServerVersion;
 

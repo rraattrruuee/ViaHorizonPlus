@@ -2,8 +2,11 @@
 use std::cell::RefCell;
 
 pub const ID: &str = "viahorizonplus";
+#[allow(dead_code)]
 pub const NAME: &str = "ViaHorizonPlus";
+#[allow(dead_code)]
 pub const VERSION: &str = "0.1.0";
+#[allow(dead_code)]
 pub const DESCRIPTION: &str =
     "Multi-version protocol selector and legacy gameplay emulation (1.8 combat & movement) for Horizon.";
 
@@ -179,6 +182,7 @@ pub fn get_settings() -> Settings {
 }
 
 /// Called by older_server hook to get the user-selected server version.
+#[allow(dead_code)]
 pub fn forced_server_version() -> Option<Option<horizon_protocol::adapter::ServerVersion>> {
     let settings = get_settings();
     if settings.protocol_index == 0 {
@@ -210,7 +214,8 @@ fn point_in_rect(p: [f32; 2], r: [f32; 4]) -> bool {
 // UI Rendering & Interaction on the Multiplayer Screen
 // ---------------------------------------------------------------------------
 
-pub fn draw_multiplayer_ui(
+#[allow(private_interfaces)]
+pub(super) fn draw_multiplayer_ui(
     game: &crate::game::Game<'_>,
     batch: &mut horizon_client::hud::HudBatch,
     screen: &crate::game::native_hooks::NativeScreenView<'_>,

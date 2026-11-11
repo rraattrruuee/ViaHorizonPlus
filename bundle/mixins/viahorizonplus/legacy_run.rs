@@ -464,7 +464,6 @@ fn viahorizonplus_net_run(
             }
             cfg::Clientbound::ResetChat(_) => {}
             cfg::Clientbound::Unknown(..) => {}
-            _ => {}
         }
     };
 

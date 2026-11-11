@@ -90,17 +90,17 @@ bindings = [
 id = "older_server"
 kind = "HEAD"
 cancellable = true
-target = "horizon_client::net::older_server"
+target = "horizon_client_lib::net::older_server"
 helper = "older_server.rs"
 bindings = [
-  { name = "address", ty = "&str", value = "address" },
+  { name = "_address", ty = "&str", value = "address" },
 ]
 
 [[injection]]
 id = "net_run"
 kind = "HEAD"
 cancellable = true
-target = "horizon_client::net::run"
+target = "horizon_client_lib::net::run"
 helper = "legacy_run.rs"
 bindings = [
   { name = "address", ty = "&str", value = "address" },
