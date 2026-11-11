@@ -8,7 +8,7 @@ pub const NAME: &str = "ViaHorizonPlus";
 pub const VERSION: &str = "0.1.0";
 #[allow(dead_code)]
 pub const DESCRIPTION: &str =
-    "Multi-version protocol selector and legacy gameplay emulation (1.8 combat & movement) for Horizon.";
+    "Multi-version protocol selector and legacy gameplay emulation for Horizon. Based on ViaFabricPlus (GPL-3.0).";
 
 /// Complete registry of Minecraft versions available in ViaHorizonPlus.
 pub const PROTOCOLS: [(&str, i32); 37] = [
@@ -333,7 +333,7 @@ pub(super) fn draw_multiplayer_ui(
         game.native_fill(batch, [0.0, 0.0, w, h], 0x88000000);
 
         let modal_w = 320.0;
-        let modal_h = 210.0;
+        let modal_h = 225.0;
         let modal_x = ((w - modal_w) / 2.0).floor();
         let modal_y = ((h - modal_h) / 2.0).floor();
         let modal_rect = [modal_x, modal_y, modal_w, modal_h];
@@ -373,6 +373,9 @@ pub(super) fn draw_multiplayer_ui(
         let opt4_bg = if point_in_rect(mouse, opt4_rect) { 0xFF5B39A8 } else { 0xFF2A2A32 };
         game.native_fill(batch, opt4_rect, opt4_bg);
         game.native_text(batch, &format!("Désactiver cooldown 1.9+: {}", on(settings.disable_cooldown)), [opt4_rect[0] + 10.0, opt4_rect[1] + 6.0], 0xFFFFFF, true);
+
+        // Upstream Attribution & License notice
+        game.native_text(batch, "Portage libre basé sur ViaFabricPlus (GPL-3.0)", [modal_x + 18.0, modal_y + 144.0], 0x888888, false);
 
         // Close button
         let close_rect = [modal_x + (modal_w - 100.0) / 2.0, modal_y + modal_h - 32.0, 100.0, 20.0];

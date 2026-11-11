@@ -620,3 +620,27 @@ Program, unless a warranty or assumption of liability accompanies a
 copy of the Program in return for a fee.
 
                      END OF TERMS AND CONDITIONS
+
+------------------------------------------------------------------------------
+                       GNU GENERAL PUBLIC LICENSE NOTICE
+
+ViaHorizonPlus: Multi-version client protocol selector & legacy emulation for Horizon.
+Copyright (C) 2026 ViaHorizonPlus Contributors.
+
+Based on and derived from ViaFabricPlus:
+Copyright (C) FlorianMichael <https://github.com/FlorianMichael>
+and the ViaVersion / ViaFabricPlus Contributors (<https://github.com/ViaVersion/ViaFabricPlus>).
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+

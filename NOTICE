@@ -1,0 +1,14 @@
+ViaHorizonPlus
+Copyright (C) 2026 ViaHorizonPlus Contributors
+
+This project is a clean-room Rust native adaptation and port of ViaFabricPlus
+for the Horizon Minecraft Rust client engine (Minecraft 26.3).
+
+Upstream Project:
+- ViaFabricPlus: https://github.com/ViaVersion/ViaFabricPlus
+- Original Author & Maintainer: FlorianMichael (https://github.com/FlorianMichael)
+- The ViaVersion Organization: https://github.com/ViaVersion
+
+License:
+ViaHorizonPlus is licensed under the GNU General Public License v3.0 or later (GPL-3.0-or-later).
+See the LICENSE file for the full license text.

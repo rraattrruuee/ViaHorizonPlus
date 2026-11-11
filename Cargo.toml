@@ -2,8 +2,8 @@
 name = "viahorizonplus"
 version = "0.1.0"
 edition = "2021"
-authors = ["ViaHorizonPlus Contributors"]
-description = "ViaFabricPlus port for Horizon (Rust Minecraft 26.3 rewrite)"
+authors = ["ViaHorizonPlus Contributors", "FlorianMichael & ViaFabricPlus Contributors (Upstream)"]
+description = "ViaFabricPlus port for Horizon (Rust Minecraft 26.3 rewrite), licensed under GPL-3.0-or-later"
 license = "GPL-3.0-or-later"
 
 [lib]
